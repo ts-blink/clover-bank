@@ -1,13 +1,15 @@
 import React from 'react';
-import { Button, Space, notification, Spin } from 'antd';
+import { Button, Space, notification, Spin, Modal } from 'antd';
 import { init, SearchEmbed, AuthType, EventType } from "@thoughtspot/embed-sdk";
+import { useSurveySender } from '../send-survey-modal/SendSurveyModal';
 
-import { sendFeedbackSurvey } from '../../services/survey/survey-service';
+import { getDataForColumnName } from './FeedbackAnalysis.util';
 import "./FeedbackAnalysis.css";
+
 
 init({
     thoughtSpotHost:
-        "https://10.87.90.166",
+        "https://embed-1-do-not-delete.thoughtspotdev.cloud/",
     authType: AuthType.None
 });
 
@@ -15,6 +17,7 @@ init({
 export const FeedbackAnalysis = () => {
     const embedRef = React.useRef(null);
     const [isEmbedLoading, setIsEmbedLoading] = React.useState(true);
+    const { sendSurvey, modalJSX } = useSurveySender();
 
     React.useEffect(() => {
         if (embedRef !== null) {
@@ -28,31 +31,22 @@ export const FeedbackAnalysis = () => {
         tsSearch
             .on('init', () => setIsEmbedLoading(true))
             .on('load', () => setIsEmbedLoading(false))
-            .on(EventType.CustomAction, (data) => {
-                console.log(data);
-                if (data.type === 'send-survey') {
-                    // sendSurvey(data.recipients);
+            .on(EventType.CustomAction, (payload: any) => {
+                const data = payload.data;
+                if (data.id === 'send-survey') {
+                    const recipients = getDataForColumnName(data.columnsAndData, 'email address');
+                    sendSurvey(recipients);
                 }
             })
             .render({
-                dataSources: ["5b6cbcc7-8e7e-4028-82a8-556bdac5ab66"],
+                dataSources: ['d3845440-5af6-451b-8e12-36b40591fc9f'],
             })
     }, [])
-    const sendSurvey = React.useCallback(async () => {
-        const messageLink = await sendFeedbackSurvey(['ashubham@gmail.com']);
-        notification['success']({
-            message: 'Survey Sent!',
-            description:
-                `The survey will be sent to the recipients within the next 5 minutes. You can click on this notification to manage this.`,
-            onClick: () => {
-                window.open(messageLink, '_blank');
-            }
-        });
-    }, []);
     return <div className="feedbackAnalysis">
         {isEmbedLoading ? <div className="embedSpinner">
             <Spin size="large" />
         </div> : ''}
         <div className="tsEmbed" ref={embedRef} id="tsEmbed"></div>
+        {modalJSX}
     </div>
 }

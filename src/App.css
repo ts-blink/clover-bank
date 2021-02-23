@@ -17,7 +17,24 @@
 }
 
 .site-page-header {
-  box-shadow: 0 2px 8px #f0f1f2;
+  
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-right > * {
+  margin-right: 30px;
+}
+
+.username {
+  margin-top: 3px;
+}
+
+.username-drop-icon {
+  margin-left: 10px;
 }
 
 .App-link {

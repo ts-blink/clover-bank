@@ -1,7 +1,7 @@
 import React from 'react';
 import { HashRouter, Link, Routes, Route, useLocation } from 'react-router-dom';
-import { PageHeader, Layout, Menu } from 'antd';
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+import { PageHeader, Layout, Menu, Badge, Avatar, Image, Dropdown, Typography } from 'antd';
+import { UserOutlined, LaptopOutlined, NotificationOutlined, SearchOutlined, BellFilled, DownOutlined } from '@ant-design/icons';
 import "antd/dist/antd.css";
 import './App.css';
 import { FeedbackAnalysis } from './components/feedback-analysis/FeedbackAnalysis';
@@ -42,6 +42,22 @@ const AppView = () => {
         ghost={false}
         subTitle="Retail Banking Customer 360"
         avatar={{ src: 'https://media-exp1.licdn.com/dms/image/C4E0BAQGcF6uTtvukQg/company-logo_200_200/0/1587155976524?e=2159024400&v=beta&t=m_j79x6LK1NZQo7Mdq1fE14d76fevkn_x_P4S32N0a8' }}
+        extra={[
+          <div className="header-right">
+            <SearchOutlined style={{ fontSize: '24px' }} />
+            <Badge count={5} offset={[2, 0]}>
+              <BellFilled style={{ fontSize: '24px' }} />
+            </Badge>
+            <Avatar
+              size={30}
+              src={<Image src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+            />
+            <div className="username">
+              <Typography.Text strong>Joe Satriani</Typography.Text>
+              <DownOutlined className="username-drop-icon" />
+            </div>
+          </div>
+        ]}
       ></PageHeader>
       <Layout style={{ flex: 1 }}>
         <Sider width={250}>
