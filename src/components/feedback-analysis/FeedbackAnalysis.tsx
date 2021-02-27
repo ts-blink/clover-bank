@@ -9,7 +9,7 @@ import "./FeedbackAnalysis.css";
 
 init({
     thoughtSpotHost:
-        "https://embed-1-do-not-delete.thoughtspotdev.cloud/",
+        "https://10.87.90.166",
     authType: AuthType.None
 });
 
@@ -39,7 +39,7 @@ export const FeedbackAnalysis = () => {
                 }
             })
             .render({
-                dataSources: ['d3845440-5af6-451b-8e12-36b40591fc9f'],
+                dataSources: ['d3db9e03-15b4-4f17-88cc-4e414996a35a'],
             })
     }, [])
     return <div className="feedbackAnalysis">
