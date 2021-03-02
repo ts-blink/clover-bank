@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Space, notification, Spin, Modal } from 'antd';
+import qs from 'query-string';
 import { init, SearchEmbed, AuthType, EventType } from "@thoughtspot/embed-sdk";
 import { useSurveySender } from '../send-survey-modal/SendSurveyModal';
 
@@ -7,9 +8,11 @@ import { getDataForColumnName } from './FeedbackAnalysis.util';
 import "./FeedbackAnalysis.css";
 
 
+const queryParams = qs.parse(window.location.search);
+const customHost: string = queryParams.host as string;
 init({
     thoughtSpotHost:
-        "https://10.87.90.166",
+        (!!customHost) ? `https://${customHost}` : "https://10.87.89.232",
     authType: AuthType.None
 });
 
@@ -39,7 +42,7 @@ export const FeedbackAnalysis = () => {
                 }
             })
             .render({
-                dataSources: ['d3db9e03-15b4-4f17-88cc-4e414996a35a'],
+                dataSources: (!!customHost) ? [] : ['0d3713c5-9b7d-473f-a262-b2f23ae4fce6'],
             })
     }, [])
     return <div className="feedbackAnalysis">
