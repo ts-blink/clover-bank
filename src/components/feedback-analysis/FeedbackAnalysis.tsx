@@ -14,11 +14,21 @@ import "./FeedbackAnalysis.css";
 
 const queryParams = qs.parse(window.location.search);
 const customHost: string = queryParams.host as string;
+
+const thoughtSpotHost = !!customHost
+  ? `https://${customHost}`
+  : "https://embed-1-do-not-delete.thoughtspotdev.cloud";
+
 init({
-  thoughtSpotHost: !!customHost
-    ? `https://${customHost}`
-    : "https://10.87.89.232",
-  authType: AuthType.None,
+  thoughtSpotHost,
+  authType: AuthType.SSO,
+  noRedirect: true,
+  getAuthToken: async () => {
+    return fetch(
+      "http://ts-everywhere-auth.thoughtspot.com:5000/gettoken/tsadmin"
+    ).then((r) => r.text());
+  },
+  username: "tsadmin",
 });
 
 export const FeedbackAnalysis = () => {
@@ -34,7 +44,7 @@ export const FeedbackAnalysis = () => {
     const tsSearch = new SearchEmbed("#tsEmbed", {
       frameParams: {},
       hideDataSources: true,
-      dataSources: !!customHost ? [] : ["0d3713c5-9b7d-473f-a262-b2f23ae4fce6"],
+      dataSources: !!customHost ? [] : ["d3845440-5af6-451b-8e12-36b40591fc9f"],
     });
     tsSearch
       .on(EmbedEvent.Init, () => setIsEmbedLoading(true))
